@@ -51,32 +51,34 @@ public class RequestFilter implements ContainerRequestFilter {
             //) Je récupère les identifiants qui me sont fournie.
             user = utilisateurInterface.loginUtilisateur( user );
             
-            if( user != null ) { //= Si mon utilisateur est bien définit.
+            if( user != null ) {
 
-                //= Je commence par vérifier que le compte est bien actif.
+                //§ Le compte est-il actif ?
                 if( user.isActif() ) {
 
-                    //) Ensuite je vérifie si l'url contient le mot "admin".
+                    //§ Les pages admin.
                     if( urlPath.contains("admin") ) {
-                        //) Si elle le contient alors je vérifie que l'utilisateur à bien le droit de voir cette page.
+
+                        //. Si l'utilisateur est bien un admin alors je le laisse se connecter.
                         if( user.isAdmin() ) {
-                            //) S'il est bien admin alors je le laisse chargé la page.
                             return;
-                        //: Sinon je le prévient qu'il n'a pas le droit d'accéder à la page.
-                        } else {
+                        } 
+
+                        //. Sinon je bloque la connexion à la page admin.
+                        else {
                             Response response = Response
                                 .status( Response.Status.FORBIDDEN )
-                                .entity( "Vous n'avez pas les droits nécessaire pour consulter cette page. " + urlPath )
+                                .entity( "Vous n'avez pas les droits nécessaire pour consulter cette page." )
                                 .build();
                             requestContext.abortWith( response );
                         }
+
                     }
-                    //§ Si le mot "admin" n'est pas présent dans l'url alors je ne prend pas la peine de vérifier le statue de l'utilisateur et lui affiche directement la page.
+
+                    //§ Aucune des conditions au-dessus n'est remplit.
                     return;
                 }
 
-                //, Si l'utilisateur est bien actif et que l'url de la page ne contient pas le mot "admin", alors je le laisse voir la page dans tout les cas.
-                return;
             }
 
             ///§ Si l'e-mail et/ou le mot de passe ne correspondent à rien dans ma base de donnée alors j'empêche la connexion.

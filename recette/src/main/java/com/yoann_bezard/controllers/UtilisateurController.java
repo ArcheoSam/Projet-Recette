@@ -258,4 +258,16 @@ public class UtilisateurController {
                         .build();
                 return response;
         }
+
+
+        @Path("/updateSelf/{email}")
+        @PUT
+        @Produces( MediaType.APPLICATION_JSON )
+        @Consumes( MediaType.APPLICATION_JSON )
+        public Response updateSelfBd( @PathParam( value = "email" ) String email ) {
+                Response response = Response
+                        .ok( "L'utilisateur a bien été supprimé de la base de donnée." )
+                        .build();
+                return response;
+        }
 }
