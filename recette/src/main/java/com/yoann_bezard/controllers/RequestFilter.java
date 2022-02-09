@@ -73,6 +73,15 @@ public class RequestFilter implements ContainerRequestFilter {
                             requestContext.abortWith( response );
                         }
 
+                        //§ La page update.
+                        if ( urlPath.contains("updateSelf") ) {
+                            Response response = Response
+                                .status( Response.Status.FORBIDDEN )
+                                .entity( urlPath )
+                                .build();
+                            requestContext.abortWith( response );
+                        }
+
                     }
 
                     //§ Aucune des conditions au-dessus n'est remplit.
